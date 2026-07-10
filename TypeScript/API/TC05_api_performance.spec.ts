@@ -1,30 +1,30 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('JSONPlaceholder - API Teljesítmény (Performance) Tesztek', () => {
+test.describe('JSONPlaceholder - API Performance Tests', () => {
 
-    // Beállítunk egy elvárt maximális válaszidőt (pl. 800 ms)
+    // Define the maximum allowed response time (SLA limit) in milliseconds
     const MAX_ALLOWED_RESPONSE_TIME = 800;
 
-    test('GET /posts - Válaszidő (SLA) ellenőrzése a teljes lista lekérésekor', async ({ request }) => {
+    test('GET /posts - Verify response time (SLA) when retrieving full posts list', async ({ request }) => {
 
-        // Elmentjük a kérés indításának pillanatát
+        // Capture the timestamp right before sending the request
         const startTime = Date.now();
 
         const response = await request.get('https://jsonplaceholder.typicode.com/posts');
 
-        // Elmentjük a válasz megérkezésének pillanatát
+        // Capture the timestamp immediately after receiving the response
         const endTime = Date.now();
 
-        // Kiszámoljuk a különbséget
+        // Calculate the total round-trip response time
         const responseTime = endTime - startTime;
 
-        // Alapvető státusz ellenőrzés
+        // Perform standard status code validation
         expect(response.status()).toBe(200);
 
-        // Kinyomtatjuk a konzolra a pontos időt, hogy lássuk a riportban
-        console.log(`--> A GET /posts sikeresen lefutott. Válaszidő: ${responseTime} ms`);
+        // Log the exact execution time to the console for reporting purposes
+        console.log(`--> GET /posts executed successfully. Response time: ${responseTime} ms`);
 
-        // A teszt elbukik, ha a szerver válaszideje túllépi a megengedett korlátot
+        // The test will fail if the server response time exceeds our predefined SLA threshold
         expect(responseTime).toBeLessThan(MAX_ALLOWED_RESPONSE_TIME);
     });
 

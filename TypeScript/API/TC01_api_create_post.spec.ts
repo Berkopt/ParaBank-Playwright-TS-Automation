@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('JSONPlaceholder - API CRUD Tesztek', () => {
+test.describe('JSONPlaceholder - API CRUD Tests', () => {
 
-    // 1. POST - LÉTREHOZÁS
-    test('POST /posts - Új egyedi bejegyzés létrehozása', async ({ request }) => {
+    // 1. POST - CREATE
+    test('POST /posts - Create a new custom post', async ({ request }) => {
         const customPayload = {
             title: 'Automated Playwright Test Run',
             body: 'Execution completed successfully on local environment.',
@@ -20,11 +20,11 @@ test.describe('JSONPlaceholder - API CRUD Tesztek', () => {
         expect(responseBody.title).toBe(customPayload.title);
         expect(responseBody.body).toBe(customPayload.body);
         expect(responseBody.userId).toBe(customPayload.userId);
-        expect(responseBody.id).toBeDefined(); // Kaptunk új ID-t
+        expect(responseBody.id).toBeDefined(); // Verify new resource ID is generated
     });
 
-    // 2. GET - OLVASÁS
-    test('GET /posts/1 - Bejegyzés lekérése', async ({ request }) => {
+    // 2. GET - READ
+    test('GET /posts/1 - Retrieve an existing post', async ({ request }) => {
         const response = await request.get('https://jsonplaceholder.typicode.com/posts/1');
 
         expect(response.status()).toBe(200); // 200 OK
@@ -35,8 +35,8 @@ test.describe('JSONPlaceholder - API CRUD Tesztek', () => {
         expect(responseBody.body).toBeDefined();
     });
 
-    // 3. PUT
-    test('PUT /posts/1 - Bejegyzés adatainak frissítése', async ({ request }) => {
+    // 3. PUT - UPDATE
+    test('PUT /posts/1 - Update existing post data', async ({ request }) => {
         const updatedPayload = {
             title: 'Updated Test Title v2',
             body: 'The content has been modified by the automation script.',
@@ -54,11 +54,11 @@ test.describe('JSONPlaceholder - API CRUD Tesztek', () => {
         expect(responseBody.body).toBe(updatedPayload.body);
     });
 
-    // 4. DELETE - TÖRLÉS
-    test('DELETE /posts/1 - Bejegyzés törlése', async ({ request }) => {
+    // 4. DELETE - DELETE
+    test('DELETE /posts/1 - Delete a post', async ({ request }) => {
         const response = await request.delete('https://jsonplaceholder.typicode.com/posts/1');
 
-        expect(response.status()).toBe(200); // 200 OK vagy 204 No Content (a mock API 200-at ad)
+        expect(response.status()).toBe(200); // Mock API returns 200 OK instead of 204 No Content
     });
 
 });

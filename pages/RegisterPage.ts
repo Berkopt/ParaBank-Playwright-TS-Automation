@@ -12,7 +12,7 @@ export class RegisterPage {
     }
 
     async fillRegistrationForm(userData: any) {
-        // Átálltunk a biztosabb input[name="..."] formátumra
+        // Refactored to utilize a more robust input[name="..."] locator strategy
         await this.page.locator('input[name="customer.firstName"]').pressSequentially(userData.firstName, { delay: 30 });
         await this.page.locator('input[name="customer.lastName"]').pressSequentially(userData.lastName, { delay: 30 });
         await this.page.locator('input[name="customer.address.street"]').pressSequentially(userData.street, { delay: 30 });
@@ -22,7 +22,7 @@ export class RegisterPage {
         await this.page.locator('input[name="customer.phoneNumber"]').pressSequentially(userData.phone, { delay: 30 });
         await this.page.locator('input[name="customer.ssn"]').pressSequentially(userData.ssn, { delay: 30 });
 
-        // Hitelesítési adatok
+        // Account Credentials
         await this.page.locator('input[name="customer.username"]').pressSequentially(userData.username, { delay: 30 });
         await this.page.locator('input[name="customer.password"]').pressSequentially(userData.password, { delay: 30 });
         await this.page.locator('input[name="repeatedPassword"]').pressSequentially(userData.password, { delay: 30 });
@@ -30,7 +30,7 @@ export class RegisterPage {
 
     async submitRegistration() {
         await this.page.waitForTimeout(500);
-        // A beküldő gomb pontosabb megadása: egy olyan submit gomb, ami a regisztrációs táblázatban van
+        // Precise button selection targeting the specific submit action within the registration form context
         await this.page.locator('td .button[value="Register"]').click();
     }
 }

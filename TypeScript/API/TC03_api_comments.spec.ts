@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('JSONPlaceholder - Kommentek és Szűrések API', () => {
+test.describe('JSONPlaceholder - Comments and Filtering API', () => {
 
-    // 1. Teszt: Kommentek szűrése egy adott poszthoz (Query Parameter teszt)
-    test('GET /comments?postId=1 - Kommentek szűrése postId alapján', async ({ request }) => {
+    // 1. Test: Filter comments for a specific post (Query Parameter test)
+    test('GET /comments?postId=1 - Filter comments by postId', async ({ request }) => {
         const response = await request.get('https://jsonplaceholder.typicode.com/comments', {
             params: {
                 postId: 1
@@ -14,22 +14,22 @@ test.describe('JSONPlaceholder - Kommentek és Szűrések API', () => {
 
         const comments = await response.json();
 
-        // Ellenőrizzük, hogy kaptunk-e vissza adatot és mindegyik a 1-es poszthoz tartozik
+        // Verify that data is returned and all items belong to postId 1
         expect(comments.length).toBeGreaterThan(0);
         expect(comments[0].postId).toBe(1);
 
-        // Ellenőrizzük a struktúrát (név, email, törzs megléte)
+        // Validate the response schema structure (presence of name, email, and body)
         expect(comments[0].email).toBeDefined();
         expect(comments[0].body).toBeDefined();
     });
 
-    // 2. Teszt: Új komment hozzáfűzése
-    test('POST /comments - Új komment beküldése egy poszt alá', async ({ request }) => {
+    // 2. Test: Append a new comment to a post
+    test('POST /comments - Submit a new comment under a post', async ({ request }) => {
         const commentPayload = {
             postId: 1,
             name: 'QA Tester John',
             email: 'john.doe@test.com',
-            body: 'Ez egy automatizált teszt komment.'
+            body: 'This is an automated test comment.'
         };
 
         const response = await request.post('https://jsonplaceholder.typicode.com/comments', {

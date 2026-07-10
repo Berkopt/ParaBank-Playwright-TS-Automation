@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('PUT /posts/1 - Bejegyzés adatainak frissítése', async ({ request }) => {
+test('PUT /posts/1 - Update existing post data', async ({ request }) => {
     const updatedPayload = {
         title: 'Updated Test Title v2',
         body: 'The content has been modified by the automation script.',

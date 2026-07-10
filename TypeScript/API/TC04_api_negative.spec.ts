@@ -1,21 +1,21 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('JSONPlaceholder - Negatív és Hibakezelési API Tesztek', () => {
+test.describe('JSONPlaceholder - Negative and Error Handling API Tests', () => {
 
-    // 1. Teszt: Nem létező erőforrás lekérése (404-es hiba ellenőrzése)
-    test('GET /posts/9999909 - Hibakód 404 ellenőrzése nem létező ID esetén', async ({ request }) => {
+    // 1. Test: Retrieve a non-existing resource (Verify 404 error)
+    test('GET /posts/9999909 - Verify 404 status code for non-existing ID', async ({ request }) => {
         const response = await request.get('https://jsonplaceholder.typicode.com/posts/9999909');
 
-        // Itt nem 200-at várunk, hanem szándékosan 404-et!
+        // We intentionally expect a 404 Not Found instead of a 200 OK
         expect(response.status()).toBe(404);
     });
 
-    // 2. Teszt: Nem létező poszt törlése (Hogyan reagál az API?)
-    test('DELETE /posts/9999909 - Nem létező poszt törlési kísérlete', async ({ request }) => {
+    // 2. Test: Attempt to delete a non-existing post
+    test('DELETE /posts/9999909 - Delete attempt on a non-existing post', async ({ request }) => {
         const response = await request.delete('https://jsonplaceholder.typicode.com/posts/9999909');
 
-        // Megjegyzés: A JSONPlaceholder egy mock API, így a nem létező törlésre is 200 OK-val vagy 404-gyel felelhet.
-        // Teszteljük le, hogy a szerver nem omlik-e össze (500-as hiba), hanem kezelhető státuszt ad vissza.
+        // Note: JSONPlaceholder is a mock API, so it might respond with 200 OK or 404 for missing resources.
+        // We verify that the server does not crash (no 500 Internal Server Error) and returns a manageable status code.
         expect(response.status()).toBeLessThan(500);
     });
 
