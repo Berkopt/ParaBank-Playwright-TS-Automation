@@ -35,7 +35,7 @@ test.describe('JSONPlaceholder - API CRUD Tesztek', () => {
         expect(responseBody.body).toBeDefined();
     });
 
-    // 3. PUT - MÓDOSÍTÁS
+    // 3. PUT
     test('PUT /posts/1 - Bejegyzés adatainak frissítése', async ({ request }) => {
         const updatedPayload = {
             title: 'Updated Test Title v2',

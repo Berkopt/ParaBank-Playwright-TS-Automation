@@ -1,41 +1,41 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('ParaBank - GUI Számlaadatok ellenőrzése', () => {
+test.describe('ParaBank - GUI Account Details Validation', () => {
 
-    test('Sikeres bejelentkezés és számlaegyenleg táblázat vizsgálata', async ({ page }) => {
-        // 1. Főoldal megnyitása
+    test('Successful login and account balance table inspection', async ({ page }) => {
+        // 1. Navigate to the main page
         await page.goto('/');
 
-        // 2. Bejelentkezés a fix, gyári 'john' fiókkal
+        // 2. Log in using the default 'john' demo account
         await page.locator('input[name="username"]').fill('john');
         await page.locator('input[name="password"]').fill('demo');
         await page.locator('input[value="Log In"]').click();
 
-        // 3. Ellenőrzés: Megjelentünk-e az Accounts Overview oldalon
+        // 3. Assertion: Verify redirection to the Accounts Overview page
         const overviewHeader = page.locator('#showOverview h1.title');
         await expect(overviewHeader).toHaveText('Accounts Overview');
 
-        // 4. Biztonsági várakozás: megvárjuk a táblázat betöltését
+        // 4. Synchronization: Wait for the network activity to settle down
         await page.waitForLoadState('networkidle');
 
-        // Pontosabb lokátor a számlatáblázat első linkjére
+        // Precise locator targeting the first link within the account table
         const firstAccountLink = page.locator('#accountTable tbody tr a').first();
 
-        // Megvárjuk, amíg a link ténylegesen láthatóvá válik
+        // Explicitly wait for the link to become visible
         await firstAccountLink.waitFor({ state: 'visible', timeout: 10000 });
         await expect(firstAccountLink).toBeVisible();
 
-        // 5. Kattintsunk rá az első számlaszámra
+        // 5. Click on the first available account number
         await firstAccountLink.click();
 
-        // 6. Újabb hálózati várakozás a részletek betöltődésére
+        // 6. Wait for the account details screen to load completely
         await page.waitForLoadState('networkidle');
 
-        // Szerepkör és szöveg alapján ellenőrizzük a főcímet
+        // Assert header visibility using role and accessible name matching
         const detailsHeader = page.getByRole('heading', { name: 'Account Details' });
         await expect(detailsHeader).toBeVisible({ timeout: 10000 });
 
-        // Rugalmas keresés: Bármilyen szöveget megtalál, amiben szerepel a 'Balance' szó
+        // Flexible text validation: Verify that the 'Balance' label is present on the page
         const balanceLabel = page.getByText(/Balance/i);
         await expect(balanceLabel).toBeVisible();
     });

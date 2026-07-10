@@ -24,7 +24,6 @@ test.describe('JSONPlaceholder - API Teljesítmény (Performance) Tesztek', () =
         // Kinyomtatjuk a konzolra a pontos időt, hogy lássuk a riportban
         console.log(`--> A GET /posts sikeresen lefutott. Válaszidő: ${responseTime} ms`);
 
-        // GOLYÓÁLLÓ PERFORMANCE ELLENŐRZÉS:
         // A teszt elbukik, ha a szerver válaszideje túllépi a megengedett korlátot
         expect(responseTime).toBeLessThan(MAX_ALLOWED_RESPONSE_TIME);
     });
