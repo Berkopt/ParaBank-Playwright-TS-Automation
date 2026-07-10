@@ -2,7 +2,10 @@
   "name": "parabankplaywright",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:gui": "playwright test TypeScript/GUI --workers=1",
+    "test:api": "playwright test TypeScript/API"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
